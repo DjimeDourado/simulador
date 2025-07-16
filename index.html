@@ -231,7 +231,7 @@
             
             <section id="verdict" class="card p-8">
                 <h2 class="section-title text-white">5. Gere o seu Relatório de Análise</h2>
-                <p class="section-subtitle">Transforme esta simulação num relatório técnico profissional para apresentar aos seus clientes ou stakeholders.</p>
+                <p class="text-center text-slate-400 mt-4 max-w-3xl mx-auto">Transforme esta simulação num relatório técnico profissional para apresentar aos seus clientes ou stakeholders.</p>
                 <div class="mt-8 text-center">
                      <button class="ai-button font-bold py-3 px-6 rounded-lg hover:opacity-90 transition-opacity text-lg" onclick="openModal()">
                         ✨ Gerar Relatório de Análise com IA
@@ -472,7 +472,7 @@
 
         function updateItineraryCost(summary) {
             if (!summary) return;
-            lastRouteSummary = summary; // Store for recalculations
+            lastRouteSummary = summary; 
 
             const distanceKm = summary.totalDistance / 1000;
             const timeSec = summary.totalTime;
