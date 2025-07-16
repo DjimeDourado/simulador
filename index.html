@@ -249,10 +249,10 @@
     <div id="aiModal" class="modal-overlay">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-2xl font-bold text-white">Assistente de Relatórios IA</h3>
+                <h3 id="modalTitle" class="text-2xl font-bold text-white">Assistente IA</h3>
                 <button onclick="closeModal()" class="text-slate-400 hover:text-white text-3xl leading-none">&times;</button>
             </div>
-            <p class="text-slate-400 mb-6">Preencha os detalhes para gerar um relatório técnico baseado na simulação atual.</p>
+            <p id="modalDescription" class="text-slate-400 mb-6"></p>
             <div id="modalForm">
                 <div class="space-y-4">
                     <div>
@@ -264,12 +264,12 @@
                         <input type="text" id="mainObjective" class="mt-1 block w-full bg-slate-800 border border-slate-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-yellow-500 focus:border-yellow-500" placeholder="Ex: Geração de ortofoto para projeto de engenharia">
                     </div>
                 </div>
-                <button id="generateBtn" onclick="generateReport()" class="ai-button w-full font-bold py-3 px-4 rounded-lg hover:opacity-90 transition-opacity mt-6 flex items-center justify-center">Gerar Relatório</button>
+                <button id="generateBtn" onclick="generateReport()" class="ai-button w-full font-bold py-3 px-4 rounded-lg hover:opacity-90 transition-opacity mt-6 flex items-center justify-center">Gerar</button>
             </div>
             <div id="modalResult" class="hidden">
-                <div id="loadingSpinner" class="flex justify-center items-center my-8"><div class="spinner"></div><p class="ml-4 text-slate-300">A IA está a redigir o relatório...</p></div>
+                <div id="loadingSpinner" class="flex justify-center items-center my-8"><div class="spinner"></div><p class="ml-4 text-slate-300">A IA está a redigir o documento...</p></div>
                 <div id="reportOutput" class="hidden">
-                    <h4 class="text-xl font-bold text-white mb-2">Rascunho do Relatório:</h4>
+                    <h4 class="text-xl font-bold text-white mb-2">Rascunho do Documento:</h4>
                     <textarea readonly id="reportText" class="w-full h-64 bg-slate-800 border border-slate-600 rounded-md p-3 text-slate-300 text-sm"></textarea>
                     <div class="flex gap-4 mt-4">
                         <button onclick="copyToClipboard()" class="bg-green-600 w-full text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">Copiar Texto</button>
@@ -580,8 +580,17 @@
         const reportOutput = document.getElementById('reportOutput');
         const errorMessage = document.getElementById('error-message');
 
-        window.openModal = function() { modal.classList.add('visible'); resetModal(); }
-        window.closeModal = function() { modal.classList.remove('visible'); }
+        window.openModal = function() {
+            document.getElementById('modalTitle').textContent = 'Assistente de Relatórios IA';
+            document.getElementById('modalDescription').textContent = 'Preencha os detalhes para gerar um relatório técnico baseado na simulação atual.';
+            document.getElementById('generateBtn').textContent = 'Gerar Relatório';
+            modal.classList.add('visible');
+            resetModal();
+        }
+
+        window.closeModal = function() {
+            modal.classList.remove('visible');
+        }
 
         function resetModal() {
             modalForm.style.display = 'block';
