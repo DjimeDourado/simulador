@@ -667,7 +667,7 @@
             try {
                 let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
                 const payload = { contents: chatHistory };
-                const apiKey = "";
+                const apiKey = "AIzaSyDpB1WJfxP1sxSS9xv1iask5UWS21qWWKU";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                 
                 const response = await fetch(apiUrl, {
@@ -676,7 +676,11 @@
                     body: JSON.stringify(payload)
                 });
 
-                if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
+                if (!response.ok) { 
+                    const errorBody = await response.text();
+                    console.error("Erro da API:", response.status, response.statusText, errorBody);
+                    throw new Error(`HTTP error! status: ${response.status}`); 
+                }
 
                 const result = await response.json();
                 
