@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Missão de Drone: Análise Dinâmica com KML</title>
+    <title>Simulador de Missão de Drone: Análise Dinâmica com LiDAR</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
@@ -192,29 +192,37 @@
 
             <section id="results">
                 <h2 class="section-title text-white">4. Analise os Resultados da Simulação</h2>
-                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div class="card p-6 border-t-4 border-yellow-400">
-                        <h3 class="text-3xl font-bold text-center text-yellow-400">DJI Phantom 4 RTK</h3>
+                        <h3 class="text-2xl font-bold text-center text-yellow-400">DJI Phantom 4 RTK</h3>
                         <div class="mt-6 grid grid-cols-2 gap-6 text-center">
                             <div><p class="kpi-label">Altitude de Voo</p><p id="p4rtk-altitude" class="text-4xl kpi-value text-yellow-400">0</p><p class="text-sm text-slate-400">metros</p></div>
-                            <div><p class="kpi-label">Voos Necessários</p><p id="p4rtk-flights" class="text-4xl kpi-value text-yellow-400">0</p><p class="text-sm text-slate-400">baterias</p></div>
-                            <div class="col-span-2"><p class="kpi-label">Tempo Total de Voo Ativo</p><p id="p4rtk-time" class="text-4xl kpi-value text-yellow-400">0</p><p class="text-sm text-slate-400">minutos</p></div>
+                            <div><p class="kpi-label">Voos</p><p id="p4rtk-flights" class="text-4xl kpi-value text-yellow-400">0</p><p class="text-sm text-slate-400">baterias</p></div>
+                            <div class="col-span-2"><p class="kpi-label">Tempo de Voo</p><p id="p4rtk-time" class="text-4xl kpi-value text-yellow-400">0</p><p class="text-sm text-slate-400">minutos</p></div>
                         </div>
                     </div>
                     <div class="card p-6 border-t-4 border-[#4ECDC4]">
-                        <h3 class="text-3xl font-bold text-center text-[#4ECDC4]">DJI Mavic 3M</h3>
+                        <h3 class="text-2xl font-bold text-center text-[#4ECDC4]">DJI Mavic 3M</h3>
                         <div class="mt-6 grid grid-cols-2 gap-6 text-center">
                             <div><p class="kpi-label">Altitude de Voo</p><p id="m3m-altitude" class="text-4xl kpi-value text-[#4ECDC4]">0</p><p class="text-sm text-slate-400">metros</p></div>
-                            <div><p class="kpi-label">Voos Necessários</p><p id="m3m-flights" class="text-4xl kpi-value text-[#4ECDC4]">0</p><p class="text-sm text-slate-400">baterias</p></div>
-                            <div class="col-span-2"><p class="kpi-label">Tempo Total de Voo Ativo</p><p id="m3m-time" class="text-4xl kpi-value text-[#4ECDC4]">0</p><p class="text-sm text-slate-400">minutos</p></div>
+                            <div><p class="kpi-label">Voos</p><p id="m3m-flights" class="text-4xl kpi-value text-[#4ECDC4]">0</p><p class="text-sm text-slate-400">baterias</p></div>
+                            <div class="col-span-2"><p class="kpi-label">Tempo de Voo</p><p id="m3m-time" class="text-4xl kpi-value text-[#4ECDC4]">0</p><p class="text-sm text-slate-400">minutos</p></div>
                         </div>
                     </div>
                     <div class="card p-6 border-t-4 border-[#FF6B6B]">
-                        <h3 class="text-3xl font-bold text-center text-[#FF6B6B]">DJI Matrice 350 + P1</h3>
+                        <h3 class="text-2xl font-bold text-center text-[#FF6B6B]">DJI Matrice + P1</h3>
                         <div class="mt-6 grid grid-cols-2 gap-6 text-center">
-                            <div><p class="kpi-label">Altitude de Voo</p><p id="m350-altitude" class="text-4xl kpi-value text-[#FF6B6B]">0</p><p class="text-sm text-slate-400">metros</p></div>
-                            <div><p class="kpi-label">Voos Necessários</p><p id="m350-flights" class="text-4xl kpi-value text-[#FF6B6B]">0</p><p class="text-sm text-slate-400">pares de baterias</p></div>
-                            <div class="col-span-2"><p class="kpi-label">Tempo Total de Voo Ativo</p><p id="m350-time" class="text-4xl kpi-value text-[#FF6B6B]">0</p><p class="text-sm text-slate-400">minutos</p></div>
+                            <div><p class="kpi-label">Altitude de Voo</p><p id="m300-altitude" class="text-4xl kpi-value text-[#FF6B6B]">0</p><p class="text-sm text-slate-400">metros</p></div>
+                            <div><p class="kpi-label">Voos</p><p id="m300-flights" class="text-4xl kpi-value text-[#FF6B6B]">0</p><p class="text-sm text-slate-400">pares de baterias</p></div>
+                            <div class="col-span-2"><p class="kpi-label">Tempo de Voo</p><p id="m300-time" class="text-4xl kpi-value text-[#FF6B6B]">0</p><p class="text-sm text-slate-400">minutos</p></div>
+                        </div>
+                    </div>
+                     <div class="card p-6 border-t-4 border-purple-500">
+                        <h3 class="text-2xl font-bold text-center text-purple-400">Matrice + LiDAR</h3>
+                        <div class="mt-6 grid grid-cols-2 gap-6 text-center">
+                            <div><p class="kpi-label">Altitude de Voo</p><p id="lidar-altitude" class="text-4xl kpi-value text-purple-400">0</p><p class="text-sm text-slate-400">metros</p></div>
+                            <div><p class="kpi-label">Voos</p><p id="lidar-flights" class="text-4xl kpi-value text-purple-400">0</p><p class="text-sm text-slate-400">pares de baterias</p></div>
+                            <div class="col-span-2"><p class="kpi-label">Tempo de Voo</p><p id="lidar-time" class="text-4xl kpi-value text-purple-400">0</p><p class="text-sm text-slate-400">minutos</p></div>
                         </div>
                     </div>
                 </div>
@@ -285,20 +293,28 @@
     window.addEventListener('load', function() {
         const P4RTK_COLOR = '#facc15'; // yellow-400
         const M3M_COLOR = '#4ECDC4';
-        const M350_COLOR = '#FF6B6B';
+        const M300_COLOR = '#FF6B6B';
+        const LIDAR_COLOR = '#a855f7'; // purple-500
         const TEXT_COLOR = '#f5f5f5';
         const GRID_COLOR = '#444444';
 
         const droneParams = {
             p4rtk: { sensorWidth: 13.2, focalLength: 8.8, imageWidth: 5472, flightSpeed: 10, batteryTime: 23 },
             m3m: { sensorWidth: 17.3, focalLength: 12.29, imageWidth: 5280, flightSpeed: 10, batteryTime: 34 },
-            m350: { sensorWidth: 35.9, focalLength: 35, imageWidth: 8192, flightSpeed: 15, batteryTime: 25 }
+            m300: { sensorWidth: 35.9, focalLength: 35, imageWidth: 8192, flightSpeed: 15, batteryTime: 30 },
+            lidar: { 
+                camera: { sensorWidth: 23.5, focalLength: 20, imageWidth: 6000 }, // Sony A6000
+                flightSpeed: 6, 
+                batteryTime: 24, 
+                fov: 70.4 
+            }
         };
 
         const missionParams = {
             area: 0, 
             overlapF: 0.80,
-            overlapS: 0.70
+            overlapS: 0.70,
+            lidarOverlapS: 0.30
         };
 
         let altitudeChart, timeChart, flightsChart;
@@ -306,12 +322,33 @@
         let lastRouteSummary = null;
         const startPoint = L.latLng(40.354755, -8.452600); // Geolayer Coords
 
-        function calculateMission(drone, gsd_cm, area_m2) {
+        function calculatePhotogrammetryMission(drone, gsd_cm, area_m2) {
             if (area_m2 <= 0) return { altitude: 0, totalTimeMinutes: 0, flights: 0 };
             const gsd_m = gsd_cm / 100;
             const H = (gsd_m * drone.focalLength * drone.imageWidth) / drone.sensorWidth;
             const footprintW = (H * drone.sensorWidth) / drone.focalLength;
             
+            const lineSpacing = footprintW * (1 - missionParams.overlapS);
+            if (lineSpacing <= 0) return { altitude: H, totalTimeMinutes: Infinity, flights: Infinity };
+            
+            const totalDistance = (area_m2 / lineSpacing);
+            const totalTimeSeconds = totalDistance / drone.flightSpeed;
+            const totalTimeMinutes = totalTimeSeconds / 60;
+            const flights = Math.ceil(totalTimeMinutes / drone.batteryTime);
+
+            return {
+                altitude: H,
+                totalTimeMinutes: totalTimeMinutes,
+                flights: flights
+            };
+        }
+
+        function calculateLiDARMission(drone, gsd_cm, area_m2) {
+            if (area_m2 <= 0) return { altitude: 0, totalTimeMinutes: 0, flights: 0 };
+            const gsd_m = gsd_cm / 100;
+            const H = (gsd_m * drone.camera.focalLength * drone.camera.imageWidth) / drone.camera.sensorWidth;
+
+            const footprintW = (H * drone.camera.sensorWidth) / drone.camera.focalLength;
             const lineSpacing = footprintW * (1 - missionParams.overlapS);
             if (lineSpacing <= 0) return { altitude: H, totalTimeMinutes: Infinity, flights: Infinity };
             
@@ -333,9 +370,10 @@
             const currentGsd = parseFloat(gsdSlider.value);
             gsdValue.textContent = currentGsd.toFixed(2);
 
-            const p4rtkResults = calculateMission(droneParams.p4rtk, currentGsd, missionParams.area);
-            const m3mResults = calculateMission(droneParams.m3m, currentGsd, missionParams.area);
-            const m350Results = calculateMission(droneParams.m350, currentGsd, missionParams.area);
+            const p4rtkResults = calculatePhotogrammetryMission(droneParams.p4rtk, currentGsd, missionParams.area);
+            const m3mResults = calculatePhotogrammetryMission(droneParams.m3m, currentGsd, missionParams.area);
+            const m300Results = calculatePhotogrammetryMission(droneParams.m300, currentGsd, missionParams.area);
+            const lidarResults = calculateLiDARMission(droneParams.lidar, currentGsd, missionParams.area);
 
             document.getElementById('p4rtk-altitude').textContent = p4rtkResults.altitude.toFixed(1);
             document.getElementById('p4rtk-time').textContent = isFinite(p4rtkResults.totalTimeMinutes) ? p4rtkResults.totalTimeMinutes.toFixed(0) : '∞';
@@ -345,22 +383,26 @@
             document.getElementById('m3m-time').textContent = isFinite(m3mResults.totalTimeMinutes) ? m3mResults.totalTimeMinutes.toFixed(0) : '∞';
             document.getElementById('m3m-flights').textContent = isFinite(m3mResults.flights) ? m3mResults.flights : '∞';
 
-            document.getElementById('m350-altitude').textContent = m350Results.altitude.toFixed(1);
-            document.getElementById('m350-time').textContent = isFinite(m350Results.totalTimeMinutes) ? m350Results.totalTimeMinutes.toFixed(0) : '∞';
-            document.getElementById('m350-flights').textContent = isFinite(m350Results.flights) ? m350Results.flights : '∞';
+            document.getElementById('m300-altitude').textContent = m300Results.altitude.toFixed(1);
+            document.getElementById('m300-time').textContent = isFinite(m300Results.totalTimeMinutes) ? m300Results.totalTimeMinutes.toFixed(0) : '∞';
+            document.getElementById('m300-flights').textContent = isFinite(m300Results.flights) ? m300Results.flights : '∞';
+
+            document.getElementById('lidar-altitude').textContent = lidarResults.altitude.toFixed(1);
+            document.getElementById('lidar-time').textContent = isFinite(lidarResults.totalTimeMinutes) ? lidarResults.totalTimeMinutes.toFixed(0) : '∞';
+            document.getElementById('lidar-flights').textContent = isFinite(lidarResults.flights) ? lidarResults.flights : '∞';
             
-            updateCharts(p4rtkResults, m3mResults, m350Results);
+            updateCharts(p4rtkResults, m3mResults, m300Results, lidarResults);
         }
 
-        function createChart(ctx, label, p4rtkData, m3mData, m350Data) {
+        function createChart(ctx, label, p4rtkData, m3mData, m300Data, lidarData) {
             return new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['P4 RTK', 'Mavic 3M', 'Matrice 350'],
+                    labels: ['P4 RTK', 'Mavic 3M', 'Matrice P1', 'Matrice LiDAR'],
                     datasets: [{
                         label: label,
-                        data: [p4rtkData, m3mData, m350Data],
-                        backgroundColor: [P4RTK_COLOR, M3M_COLOR, M350_COLOR],
+                        data: [p4rtkData, m3mData, m300Data, lidarData],
+                        backgroundColor: [P4RTK_COLOR, M3M_COLOR, M300_COLOR, LIDAR_COLOR],
                         barThickness: 30
                     }]
                 },
@@ -375,14 +417,14 @@
             });
         }
 
-        function updateCharts(p4rtk, m3m, m350) {
+        function updateCharts(p4rtk, m3m, m300, lidar) {
             if (altitudeChart) altitudeChart.destroy();
             if (timeChart) timeChart.destroy();
             if (flightsChart) flightsChart.destroy();
 
-            altitudeChart = createChart(document.getElementById('altitudeChart').getContext('2d'), 'Altitude (m)', p4rtk.altitude, m3m.altitude, m350.altitude);
-            timeChart = createChart(document.getElementById('timeChart').getContext('2d'), 'Tempo (min)', isFinite(p4rtk.totalTimeMinutes) ? p4rtk.totalTimeMinutes : 0, isFinite(m3m.totalTimeMinutes) ? m3m.totalTimeMinutes : 0, isFinite(m350.totalTimeMinutes) ? m350.totalTimeMinutes : 0);
-            flightsChart = createChart(document.getElementById('flightsChart').getContext('2d'), 'Nº de Voos', isFinite(p4rtk.flights) ? p4rtk.flights : 0, isFinite(m3m.flights) ? m3m.flights : 0, isFinite(m350.flights) ? m350.flights : 0);
+            altitudeChart = createChart(document.getElementById('altitudeChart').getContext('2d'), 'Altitude (m)', p4rtk.altitude, m3m.altitude, m300.altitude, lidar.altitude);
+            timeChart = createChart(document.getElementById('timeChart').getContext('2d'), 'Tempo (min)', isFinite(p4rtk.totalTimeMinutes) ? p4rtk.totalTimeMinutes : 0, isFinite(m3m.totalTimeMinutes) ? m3m.totalTimeMinutes : 0, isFinite(m300.totalTimeMinutes) ? m300.totalTimeMinutes : 0, isFinite(lidar.totalTimeMinutes) ? lidar.totalTimeMinutes : 0);
+            flightsChart = createChart(document.getElementById('flightsChart').getContext('2d'), 'Nº de Voos', isFinite(p4rtk.flights) ? p4rtk.flights : 0, isFinite(m3m.flights) ? m3m.flights : 0, isFinite(m300.flights) ? m300.flights : 0, isFinite(lidar.flights) ? lidar.flights : 0);
         }
 
         function initMap() {
@@ -621,9 +663,12 @@
             const m3mAlt = document.getElementById('m3m-altitude').textContent;
             const m3mTime = document.getElementById('m3m-time').textContent;
             const m3mFlights = document.getElementById('m3m-flights').textContent;
-            const m350Alt = document.getElementById('m350-altitude').textContent;
-            const m350Time = document.getElementById('m350-time').textContent;
-            const m350Flights = document.getElementById('m350-flights').textContent;
+            const m300Alt = document.getElementById('m300-altitude').textContent;
+            const m300Time = document.getElementById('m300-time').textContent;
+            const m300Flights = document.getElementById('m300-flights').textContent;
+            const lidarAlt = document.getElementById('lidar-altitude').textContent;
+            const lidarTime = document.getElementById('lidar-time').textContent;
+            const lidarFlights = document.getElementById('lidar-flights').textContent;
 
             modalForm.style.display = 'none';
             modalResult.style.display = 'block';
@@ -639,36 +684,27 @@
 
                 **Parâmetros da Simulação:**
                 - **Área do Projeto:** ${currentArea} hectares
-                - **Resolução (GSD) Requerida:** ${currentGsd} cm/px
+                - **Resolução Fotogramétrica (GSD) Requerida:** ${currentGsd} cm/px
 
                 **Dados Comparativos da Simulação:**
-                 - **DJI Phantom 4 RTK:**
-                  - Altitude de Voo: ${p4rtkAlt} m
-                  - Tempo Total de Voo: ${p4rtkTime} minutos
-                  - Voos Necessários: ${p4rtkFlights} baterias
-                - **DJI Mavic 3M:**
-                  - Altitude de Voo: ${m3mAlt} m
-                  - Tempo Total de Voo: ${m3mTime} minutos
-                  - Voos Necessários: ${m3mFlights} baterias
-                - **DJI Matrice 350 + P1:**
-                  - Altitude de Voo: ${m350Alt} m
-                  - Tempo Total de Voo: ${m350Time} minutos
-                  - Voos Necessários: ${m350Flights} pares de baterias
+                 - **DJI Phantom 4 RTK:** Altitude: ${p4rtkAlt} m, Tempo de Voo: ${p4rtkTime} min, Voos: ${p4rtkFlights}
+                - **DJI Mavic 3M:** Altitude: ${m3mAlt} m, Tempo de Voo: ${m3mTime} min, Voos: ${m3mFlights}
+                - **DJI Matrice 300 + P1 (Fotogrametria):** Altitude: ${m300Alt} m, Tempo de Voo: ${m300Time} min, Voos: ${m300Flights}
+                - **DJI Matrice 300 + L1 (LiDAR):** Altitude: ${lidarAlt} m, Tempo de Voo: ${lidarTime} min, Voos: ${lidarFlights}
 
                 **Estrutura do Relatório:**
                 1.  **Assunto:** Relatório de Viabilidade Técnica para o Projeto ${projectName}.
-                2.  **Sumário Executivo:** Resuma o desafio e a recomendação final com base nos dados da simulação para o GSD de ${currentGsd} cm e área de ${currentArea} ha.
-                3.  **Análise Comparativa de Desempenho:** Compare objetivamente os três sistemas usando os dados da simulação (altitude, tempo, voos). Explique como a diferença nos sensores e na altitude de voo impacta diretamente a eficiência operacional de cada um.
-                4.  **Análise Logística:** Discuta o que os "Voos Necessários" e "Tempo de Voo" significam em termos de um dia de trabalho, gestão de baterias e mão-de-obra para cada plataforma.
-                5.  **Recomendação Final:** Declare qual equipamento é o mais recomendado para este cenário específico e porquê, focando no ROI, fiabilidade e na capacidade de cumprir os objetivos do projeto de forma eficiente.
+                2.  **Sumário Executivo:** Resuma o desafio e a recomendação final.
+                3.  **Análise Comparativa de Desempenho:** Compare os quatro sistemas (três de fotogrametria e um LiDAR) usando os dados da simulação. Explique as diferenças de eficiência.
+                4.  **Análise Logística:** Discuta o que os "Voos Necessários" e "Tempo de Voo" significam para cada plataforma.
+                5.  **Recomendação Final:** Declare qual equipamento é o mais recomendado para este cenário específico e porquê.
 
                 Mantenha um tom formal, técnico e focado no valor para o negócio.`;
             
             try {
                 let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
                 const payload = { contents: chatHistory };
-                // IMPORTANTE: Insira a sua chave de API da Google aqui.
-                const apiKey = "API_KEY";
+                const apiKey = "API_KEY"; // SUBSTITUA PELA SUA CHAVE DE API
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                 
                 const response = await fetch(apiUrl, {
