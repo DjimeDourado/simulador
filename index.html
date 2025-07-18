@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Análise dinâmica de GSD e Área de Projeto com Relatórios IA</title>
+    <title>Simulador de Missão de Drone: Análise Dinâmica com KML</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
@@ -16,6 +16,10 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
     <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     
+    <!-- Geocoding (Search) Plugin -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -103,6 +107,11 @@
             animation: spin 1s ease-in-out infinite;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
+        .leaflet-control-geocoder-form input {
+            background-color: #444 !important;
+            color: #fff !important;
+            border-color: #555 !important;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -130,7 +139,7 @@
                         </label>
                     </div>
                  </div>
-                 <p class="text-center text-slate-400 mt-2">Desenhe um polígono (□) no mapa ou carregue um ficheiro (KML, GeoJSON).</p>
+                 <p class="text-center text-slate-400 mt-2">Use a busca (🔍), desenhe um polígono (□) ou carregue um ficheiro.</p>
                  <div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
                      <div class="md:col-span-3">
                         <div id="map"></div>
@@ -165,7 +174,7 @@
                 </div>
                 <div class="mt-6 bg-slate-800 p-6 rounded-lg grid grid-cols-1 md:grid-cols-3 text-center gap-4">
                     <div>
-                        <p class="kpi-label">Distância</p>
+                        <p id="distanceLabel" class="kpi-label">Distância</p>
                         <p class="text-2xl font-bold text-sky-400"><span id="routeDistance">--</span> km</p>
                     </div>
                     <div>
@@ -177,6 +186,7 @@
                         <p class="text-2xl font-bold text-green-400">€ <span id="routeCost">--</span></p>
                     </div>
                 </div>
+                <div id="routingError" class="hidden text-center text-yellow-400 text-xs mt-2">O cálculo automático da rota falhou. A distância é em linha reta.</div>
             </section>
 
             <section id="controls" class="card p-6 md:p-8">
@@ -305,16 +315,14 @@
             lidar: { 
                 camera: { sensorWidth: 23.5, focalLength: 20, imageWidth: 6000 }, // Sony A6000
                 flightSpeed: 6, 
-                batteryTime: 24, 
-                fov: 70.4 
+                batteryTime: 24
             }
         };
 
         const missionParams = {
             area: 0, 
             overlapF: 0.80,
-            overlapS: 0.70,
-            lidarOverlapS: 0.30
+            overlapS: 0.70
         };
 
         let altitudeChart, timeChart, flightsChart;
@@ -428,14 +436,14 @@
         }
 
         function initMap() {
-            const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' });
-            const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: '&copy; Esri' });
-            const terrain = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenTopoMap' });
+            const googleStreets = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{ maxZoom: 20, subdomains:['mt0','mt1','mt2','mt3'], attribution: '&copy; Google' });
+            const googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{ maxZoom: 20, subdomains:['mt0','mt1','mt2','mt3'], attribution: '&copy; Google' });
+            const googleTerrain = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',{ maxZoom: 20, subdomains:['mt0','mt1','mt2','mt3'], attribution: '&copy; Google' });
 
             map = L.map('map').setView([39.5, -8.0], 7);
-            street.addTo(map);
+            googleStreets.addTo(map);
 
-            const baseMaps = { "Street": street, "Satellite": satellite, "Terrain": terrain };
+            const baseMaps = { "Google Streets": googleStreets, "Google Satellite": googleSat, "Google Terrain": googleTerrain };
             L.control.layers(baseMaps).addTo(map);
 
             drawnItems = new L.FeatureGroup();
@@ -450,6 +458,8 @@
             });
             map.addControl(drawControl);
 
+            L.Control.geocoder().addTo(map);
+
             map.on(L.Draw.Event.CREATED, function (e) {
                 drawnItems.clearLayers();
                 drawnItems.addLayer(e.layer);
@@ -460,7 +470,7 @@
             map.on(L.Draw.Event.DELETED, function() {
                 missionParams.area = 0;
                 document.getElementById('areaValue').textContent = "0.0";
-                if(routingControl) map.removeControl(routingControl);
+                if(routingControl) routingControl.setWaypoints([]);
                 updateInfographic();
             });
         }
@@ -498,18 +508,27 @@
 
         function updateRoute(destination) {
             if (routingControl) {
-                map.removeControl(routingControl);
+                routingControl.setWaypoints([startPoint, destination]);
+            } else {
+                routingControl = L.Routing.control({
+                    waypoints: [startPoint, destination],
+                    routeWhileDragging: false,
+                    show: false,
+                    addWaypoints: false,
+                    lineOptions: { styles: [{color: '#FF6B6B', opacity: 0.8, weight: 5}] }
+                }).on('routesfound', function(e) {
+                    const route = e.routes[0];
+                    document.getElementById('routingError').classList.add('hidden');
+                    document.getElementById('distanceLabel').textContent = 'Distância';
+                    updateItineraryCost(route.summary);
+                }).on('routingerror', function(e) {
+                    console.error("Routing Error:", e.error);
+                    document.getElementById('routingError').classList.remove('hidden');
+                    document.getElementById('distanceLabel').textContent = 'Distância (linha reta)';
+                    const distance = startPoint.distanceTo(destination) / 1000;
+                    updateItineraryCost({ totalDistance: distance * 1000, totalTime: NaN });
+                }).addTo(map);
             }
-            routingControl = L.Routing.control({
-                waypoints: [startPoint, destination],
-                routeWhileDragging: false,
-                show: false,
-                addWaypoints: false,
-                lineOptions: { styles: [{color: '#FF6B6B', opacity: 0.8, weight: 5}] }
-            }).on('routesfound', function(e) {
-                const route = e.routes[0];
-                updateItineraryCost(route.summary);
-            }).addTo(map);
         }
 
         function updateItineraryCost(summary) {
@@ -525,13 +544,20 @@
             const tollCost = parseFloat(document.getElementById('tollCost').value) || 0;
 
             const fuelCost = (distanceKm / 100) * consumption * price;
-            const timeCost = (timeSec / 3600) * costHour;
+            
+            let timeCost = 0;
+            if (!isNaN(timeSec)) {
+                timeCost = (timeSec / 3600) * costHour;
+                const hours = Math.floor(timeSec / 3600);
+                const minutes = Math.round((timeSec % 3600) / 60);
+                document.getElementById('routeTime').textContent = `${hours}h ${minutes}m`;
+            } else {
+                document.getElementById('routeTime').textContent = 'N/A';
+            }
+            
             const totalCost = (fuelCost + timeCost) * 2 + tollCost;
 
             document.getElementById('routeDistance').textContent = distanceKm.toFixed(1);
-            const hours = Math.floor(timeSec / 3600);
-            const minutes = Math.round((timeSec % 3600) / 60);
-            document.getElementById('routeTime').textContent = `${hours}h ${minutes}m`;
             document.getElementById('routeCost').textContent = totalCost.toFixed(2);
         }
         
